@@ -74,6 +74,7 @@ function ServicesCreate() {
               <Form.Control
                 name="value"
                 type="number"
+                step="any"
                 placeholder="Valor do Serviço"
                 {...register("value", { required: true })}
               />
