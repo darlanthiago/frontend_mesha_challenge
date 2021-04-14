@@ -1,0 +1,246 @@
+// $sidebar-bg-color: #1f2431;
+// $submenu-bg-color: rgba(255, 255, 255, 0.05);
+// $submenu-bg-color-collapsed: rgba(29, 29, 29, 0.95);
+// $sidebar-color: #9b9b9b;
+// $highlight-color: lighten(#6720ec, 25%) !important;
+// $icon-bg-color: #2d3446;
+
+$sidebar-bg-color: #ff4757;
+$submenu-bg-color: darken(#ff4757, 4%);
+$sidebar-color: #f1f2f6;
+$highlight-color: #e4c2c4;
+$icon-bg-color: darken(#ff4757, 7%);
+$icon-size: 30px;
+$sidebar-width: 240px;
+
+$theme-colors: (
+  "primary": #4e73df,
+  "secondary": #858796,
+  "info": #36b9cc,
+  "danger": #e74a3b,
+  "warning": #f6c23e,
+  "success": #1cc88a,
+  "dark": #5a5c69,
+  "purple": #6f42c1,
+  "indigo": #6610f2,
+);
+
+@import "bootstrap/scss/bootstrap";
+@import "~react-pro-sidebar/dist/scss/styles.scss";
+
+body {
+  margin: 0;
+  height: 100vh;
+  color: #353535 !important;
+  font-family: "Roboto", sans-serif;
+}
+
+#root {
+  height: 100%;
+}
+
+.app {
+  height: 100%;
+  display: flex;
+  position: relative;
+
+  .pro-sidebar.md {
+    position: fixed;
+  }
+  .btn-toggle {
+    cursor: pointer;
+    width: 50px;
+    height: 50px;
+    background: $sidebar-bg-color !important;
+    color: #fff !important;
+    text-align: center;
+    border: 0;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 18px;
+    display: none;
+    margin-bottom: 20px;
+  }
+  .sidebar-btn-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    .sidebar-btn {
+      padding: 1px 15px;
+      border-radius: 40px;
+      background: #ff2336 !important;
+      border: 0;
+      color: #fff !important;
+      text-decoration: none;
+      margin: 0 auto;
+      height: 35px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      transition: background 0.3s;
+      span {
+        margin-left: 5px;
+        font-size: 13px;
+      }
+      &:hover {
+        background: lighten(#ff2336, 2.5%) !important;
+      }
+    }
+  }
+  .collapsed {
+    .sidebar-btn {
+      display: inline-block;
+      border-radius: 50%;
+      width: 35px;
+      height: 35px;
+      line-height: 40px;
+      padding: 0;
+    }
+  }
+  main {
+    padding: 0 0 0 24px;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+    margin-left: 220px;
+
+    header {
+      margin-bottom: 40px;
+      border-bottom: 1px solid #a88d8d !important;
+      h1 {
+        display: flex;
+        align-items: center;
+        transform: translateX(-20px);
+      }
+    }
+    footer {
+      margin-top: auto;
+      color: #888 !important;
+      text-align: center;
+      a {
+        text-decoration: none;
+        color: #888 !important;
+        &:hover {
+          text-decoration: underline;
+        }
+      }
+    }
+  }
+  .social-bagdes {
+    margin-top: 10px;
+    img {
+      margin: 5px;
+    }
+  }
+  .block {
+    display: flex;
+    margin-bottom: 24px;
+    font-size: 14px;
+    color: #545454 !important;
+    > span {
+      margin-left: 10px;
+    }
+  }
+  &.rtl {
+    direction: rtl;
+    text-align: right;
+    header {
+      h1 {
+        transform: translateX(20px);
+      }
+    }
+    .block {
+      direction: rtl;
+      > span {
+        margin-left: 0;
+        margin-right: 10px;
+      }
+    }
+    .sidebar-btn-wrapper {
+      .sidebar-btn {
+        span {
+          margin-left: 0;
+          margin-right: 5px;
+        }
+      }
+    }
+  }
+  @media (max-width: 767.98px) {
+    overflow-x: hidden;
+    header {
+      h1 {
+        font-size: 24px;
+      }
+    }
+  }
+  @media (max-width: $breakpoint-md) {
+    .btn-toggle {
+      display: flex;
+    }
+    main {
+      margin-left: 0;
+      padding-left: 0;
+    }
+    &.rtl {
+      .btn-toggle {
+        margin-left: auto;
+      }
+    }
+  }
+}
+
+.disabled-link {
+  pointer-events: none;
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+a[aria-disabled="true"] {
+  color: currentColor;
+  display: inline-block;
+  /* For IE11/ MS Edge bug */
+  pointer-events: none;
+  text-decoration: none;
+}
+
+.hidden {
+  display: none;
+}
+
+.btn-close {
+  box-sizing: content-box;
+  width: 1em;
+  height: 1em;
+  padding: 0.25em 0.25em;
+  color: #afaeb4;
+  background: transparent
+    url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23000'%3e%3cpath d='M.293.293a1 1 0 011.414 0L8 6.586 14.293.293a1 1 0 111.414 1.414L9.414 8l6.293 6.293a1 1 0 01-1.414 1.414L8 9.414l-6.293 6.293a1 1 0 01-1.414-1.414L6.586 8 .293 1.707a1 1 0 010-1.414z'/%3e%3c/svg%3e")
+    center/1em auto no-repeat;
+  border: 0;
+  border-radius: 0.25rem;
+  opacity: 0.5;
+  transition: background 0.2s;
+}
+
+.btn-close:hover,
+.btn-close:focus {
+  outline: none;
+  color: #afaeb4;
+  background-color: #f2f2f2;
+  opacity: 1;
+}
+
+button:disabled {
+  cursor: not-allowed !important;
+  pointer-events: all !important;
+}
+
+.disabled {
+  cursor: not-allowed !important;
+  pointer-events: all !important;
+}
