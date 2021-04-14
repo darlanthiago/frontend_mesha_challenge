@@ -12,12 +12,7 @@ import {
 
 import { Link } from "react-router-dom";
 
-import {
-  FaRegChartBar,
-  FaHome,
-  FaRegUserCircle,
-  FaUsersCog,
-} from "react-icons/fa";
+import { FaRegChartBar, FaHome, FaUsersCog } from "react-icons/fa";
 
 import { FiLogOut } from "react-icons/fi";
 
@@ -28,6 +23,7 @@ import { useReactAuth } from "../../../contexts/hooks/AuthContext";
 
 //assets
 import Logo from "../../../assets/logo.svg";
+import { Image } from "react-bootstrap";
 
 const Aside = ({ image, collapsed, rtl, toggled, handleToggleSidebar }) => {
   const { user, signOut } = useReactAuth();
@@ -113,9 +109,14 @@ const Aside = ({ image, collapsed, rtl, toggled, handleToggleSidebar }) => {
         </Menu>
 
         <Menu iconShape="round">
-          <SubMenu title={`Olá, ${user.name}`} icon={<FaRegUserCircle />}>
-            <MenuItem>Perfil</MenuItem>
-            <MenuItem>Segurança</MenuItem>
+          <SubMenu
+            title={`Olá, ${user.name}`}
+            icon={<Image src={user.avatar_url} roundedCircle height="30" />}
+          >
+            <MenuItem>
+              Perfil
+              <Link to="/profile" />
+            </MenuItem>
           </SubMenu>
         </Menu>
       </SidebarContent>
