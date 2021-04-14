@@ -8,6 +8,7 @@ import UserView from "../pages/User/view";
 import UserCreate from "../pages/User/create";
 import Services from "../pages/Services";
 import ServicesCreate from "../pages/Services/create";
+import Profile from "../pages/Profile";
 
 export default function PrivateRoutes() {
   return (
@@ -19,6 +20,8 @@ export default function PrivateRoutes() {
       <Route path="/user" component={User} />
       <Route path="/user-view/:id" component={UserView} />
       <Route path="/user-create" component={UserCreate} />
+
+      <Route path="/profile" component={Profile} />
 
       <Route path="/service" component={Services} />
       <Route path="/service-create" component={ServicesCreate} />
