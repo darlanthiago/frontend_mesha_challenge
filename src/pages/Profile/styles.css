@@ -1,0 +1,9 @@
+.button-upload {
+  cursor: pointer;
+  transition: border-style 0.2s;
+}
+
+.clean-preview {
+  border: 0;
+  background: transparent;
+}
