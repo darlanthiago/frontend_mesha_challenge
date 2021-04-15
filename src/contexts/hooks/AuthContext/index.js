@@ -10,6 +10,7 @@ import { toast } from "react-toastify";
 import Cookies from "js-cookie";
 
 import api from "../../../services/api";
+import { isEmptyObject } from "../../../utils/checkObject";
 
 const AuthContext = createContext();
 
@@ -140,7 +141,14 @@ export const AuthProvider = ({ children }) => {
 
   return (
     <AuthContext.Provider
-      value={{ signed: !!user, user, setUser, signIn, signOut, loading }}
+      value={{
+        signed: isEmptyObject(user),
+        user,
+        setUser,
+        signIn,
+        signOut,
+        loading,
+      }}
     >
       {children}
     </AuthContext.Provider>
