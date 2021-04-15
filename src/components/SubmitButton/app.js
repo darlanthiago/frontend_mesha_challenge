@@ -6,6 +6,7 @@ function SubmitButtonApp({
   color,
   size = null,
   disabled = null,
+  isBlock = false,
 }) {
   const [spinnerSize, setSpinnerSize] = useState(1);
 
@@ -22,7 +23,9 @@ function SubmitButtonApp({
   return (
     <button
       type="submit"
-      className={`btn btn-${color} ${size && `btn-${size}`} text-white`}
+      className={`btn btn-${color} ${size && `btn-${size}`} text-white  ${
+        isBlock && "btn-block"
+      } `}
       loading={loading ? 1 : 0}
       disabled={disabled ? disabled : loading ? 1 : 0}
     >
