@@ -10,23 +10,28 @@ import { toast } from "react-toastify";
 import Cookies from "js-cookie";
 
 import api from "../../../services/api";
-import { isEmptyObject } from "../../../utils/checkObject";
 
 const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
-  const [loading, setLoading] = useState(false);
   const history = useHistory();
 
+  const [loading, setLoading] = useState(false);
+  const [signed, setSigned] = useState(false);
   const [user, setUser] = useState({});
+
+  console.log({ user, signed });
 
   useEffect(() => {
     (async () => {
-      const tokenStorage = localStorage.getItem("@RJSAuth:token");
-      const userStorage = localStorage.getItem("@RJSAuth:user");
+      const tokenStoraged = localStorage.getItem("@RJSAuth:token");
+      const userStoraged = localStorage.getItem("@RJSAuth:user");
 
-      if (!tokenStorage || !userStorage) {
+      if (!tokenStoraged || !userStoraged) {
         setLoading(false);
+        setUser({});
+        setSigned(false);
+        history.push("/login");
         return;
       }
 
@@ -36,18 +41,20 @@ export const AuthProvider = ({ children }) => {
       await api
         .get("/api/user/me", {
           headers: {
-            Authorization: `Bearer ${tokenStorage}`,
+            Authorization: `Bearer ${tokenStoraged}`,
           },
         })
         .then((resp) => {
           if (resp.data) {
+            api.defaults.headers["Authorization"] = `Bearer ${tokenStoraged}`;
             setUser(resp.data);
-            api.defaults.headers["Authorization"] = `Bearer ${tokenStorage}`;
+            setSigned(true);
             setLoading(false);
             return;
           }
 
           setLoading(false);
+          setSigned(false);
           history.push("/login");
         })
         .catch((error) => {
@@ -57,6 +64,8 @@ export const AuthProvider = ({ children }) => {
           delete api.defaults.headers.common["XSRF-TOKEN"];
           Cookies.remove("XSRF-TOKEN");
           setLoading(false);
+          setUser({});
+          setSigned(false);
           toast.error("❌ Ops! Faça login novamente!");
           return;
         });
@@ -75,23 +84,18 @@ export const AuthProvider = ({ children }) => {
         })
         .then((response) => {
           const { token, user } = response.data;
-
           api.defaults.headers["Authorization"] = `Bearer ${token}`;
-
           localStorage.setItem("@RJSAuth:user", JSON.stringify(user));
           localStorage.setItem("@RJSAuth:token", token);
-
           setUser(user);
+          setSigned(true);
           setLoading(false);
-
-          history.push("/");
-
           toast.success("✅ Login feito com sucesso!");
-
-          return;
+          history.push("/");
         })
         .catch((error) => {
           setUser({});
+          setSigned(false);
           setLoading(false);
           toast.error(
             "❌ Erro no login, verifique os dados e tente novamente!"
@@ -102,15 +106,6 @@ export const AuthProvider = ({ children }) => {
   );
 
   const signOut = useCallback(async () => {
-    const tokenStorage = localStorage.getItem("@RJSAuth:token");
-    const userStorage = localStorage.getItem("@RJSAuth:user");
-
-    if (!tokenStorage || !userStorage) {
-      setLoading(false);
-      history.push("/login");
-      return;
-    }
-
     setLoading(true);
 
     await api
@@ -122,6 +117,7 @@ export const AuthProvider = ({ children }) => {
         delete api.defaults.headers.common["XSRF-TOKEN"];
         Cookies.remove("XSRF-TOKEN");
         setUser({});
+        setSigned(false);
         setLoading(false);
         history.push("/login");
         toast.success("✅ Logout feito com sucesso!");
@@ -133,22 +129,15 @@ export const AuthProvider = ({ children }) => {
         delete api.defaults.headers.common["XSRF-TOKEN"];
         Cookies.remove("XSRF-TOKEN");
         setUser({});
+        setSigned(false);
         setLoading(false);
         toast.error("❌ Ops, algo deu errado! Faça o login novamente.");
-        history.push("/login");
       });
   }, [history]);
 
   return (
     <AuthContext.Provider
-      value={{
-        signed: isEmptyObject(user),
-        user,
-        setUser,
-        signIn,
-        signOut,
-        loading,
-      }}
+      value={{ signed, user, setUser, signIn, signOut, loading }}
     >
       {children}
     </AuthContext.Provider>
