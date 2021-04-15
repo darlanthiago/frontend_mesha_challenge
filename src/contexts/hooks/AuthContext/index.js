@@ -21,10 +21,10 @@ export const AuthProvider = ({ children }) => {
 
   useEffect(() => {
     (async () => {
-      const token = localStorage.getItem("@RJSAuth:token");
-      const user = localStorage.getItem("@RJSAuth:user");
+      const tokenStorage = localStorage.getItem("@RJSAuth:token");
+      const userStorage = localStorage.getItem("@RJSAuth:user");
 
-      if (!token || !user) {
+      if (!tokenStorage || !userStorage) {
         setLoading(false);
         return;
       }
@@ -35,13 +35,13 @@ export const AuthProvider = ({ children }) => {
       await api
         .get("/api/user/me", {
           headers: {
-            Authorization: `Bearer ${token}`,
+            Authorization: `Bearer ${tokenStorage}`,
           },
         })
         .then((resp) => {
           if (resp.data) {
             setUser(resp.data);
-            api.defaults.headers["Authorization"] = `Bearer ${token}`;
+            api.defaults.headers["Authorization"] = `Bearer ${tokenStorage}`;
             setLoading(false);
             return;
           }
@@ -101,6 +101,15 @@ export const AuthProvider = ({ children }) => {
   );
 
   const signOut = useCallback(async () => {
+    const tokenStorage = localStorage.getItem("@RJSAuth:token");
+    const userStorage = localStorage.getItem("@RJSAuth:user");
+
+    if (!tokenStorage || !userStorage) {
+      setLoading(false);
+      history.push("/login");
+      return;
+    }
+
     setLoading(true);
 
     await api
@@ -111,7 +120,6 @@ export const AuthProvider = ({ children }) => {
         delete api.defaults.headers.common["Authorization"];
         delete api.defaults.headers.common["XSRF-TOKEN"];
         Cookies.remove("XSRF-TOKEN");
-
         setUser({});
         setLoading(false);
         history.push("/login");
@@ -124,9 +132,9 @@ export const AuthProvider = ({ children }) => {
         delete api.defaults.headers.common["XSRF-TOKEN"];
         Cookies.remove("XSRF-TOKEN");
         setUser({});
-        history.push("/login");
         setLoading(false);
         toast.error("❌ Ops, algo deu errado! Faça o login novamente.");
+        history.push("/login");
       });
   }, [history]);
 
