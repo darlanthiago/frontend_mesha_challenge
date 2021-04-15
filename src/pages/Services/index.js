@@ -37,8 +37,8 @@ function Services() {
 
       <Row className="mt-2">
         {services.map((item, index) => (
-          <Col md={3} sm={12} className="mt-2">
-            <Card key={index}>
+          <Col md={3} sm={12} className="mt-2" key={index}>
+            <Card>
               <Card.Body>
                 <Card.Title>{item.name}</Card.Title>
                 <Card.Text>Duração: {item.duration} minutos</Card.Text>
