@@ -111,7 +111,7 @@ const Aside = ({ image, collapsed, rtl, toggled, handleToggleSidebar }) => {
         <Menu iconShape="round">
           <SubMenu
             title={`Olá, ${user.name}`}
-            icon={<Image src={user.avatar_url} roundedCircle height="30" />}
+            icon={<Image src={user.avatar_url} rounded height="40" />}
           >
             <MenuItem>
               Perfil
