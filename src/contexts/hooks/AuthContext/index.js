@@ -124,6 +124,7 @@ export const AuthProvider = ({ children }) => {
         delete api.defaults.headers.common["XSRF-TOKEN"];
         Cookies.remove("XSRF-TOKEN");
         setUser({});
+        history.push("/login");
         setLoading(false);
         toast.error("❌ Ops, algo deu errado! Faça o login novamente.");
       });
